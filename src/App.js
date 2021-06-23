@@ -1,22 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from './saga/userReducer';
+import UserTable from './containers/UserTable';
+import InputForm from './containers/FormDialog';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUser())
+  }, [dispatch])
+
+  const user = useSelector((state) => state.users);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div>
+          {user ? <UserTable data={user}/> : <h1>No records available</h1>}
+        </div>
       </header>
     </div>
   );
