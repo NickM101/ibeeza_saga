@@ -11,8 +11,6 @@ function* getUsers(){
                 'Content-Type': 'application/json'
             },
         }).then(res => res.json())
-    
-        console.log('all user', response)
         yield put(allUsers(response))
     } catch(error) {
         console.log(error)
@@ -26,7 +24,6 @@ function* userWatcher(){
 
 function* createUser(action) {
     try {
-        console.log('action.payload', action.payload.user)
         yield fetch(url, {
             method: 'POST',
             headers: {

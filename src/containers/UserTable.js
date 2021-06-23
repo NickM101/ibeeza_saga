@@ -10,6 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import CustomDialog from "./CustomDialog";
 import FormDialog from "./FormDialog";
+import { CSVLink, CSVDownload } from "react-csv";
 
 const useStyles = makeStyles({
   table: {
@@ -27,25 +28,25 @@ export default function UserTable({ data }) {
   const [obj, setObj] = React.useState(null);
 
   const handleCreateOpen = () => {
-    setOpenCreate(true)
-  }
+    setOpenCreate(true);
+  };
 
   const handleCreateClose = () => {
-    setOpenCreate(false)
-  }
+    setOpenCreate(false);
+  };
 
   const handleEditOpen = (target) => {
-    setObj(target)
-    setOpenEdit(true)
-  }
+    setObj(target);
+    setOpenEdit(true);
+  };
 
   const handleEditClose = () => {
-    setOpenEdit(false)
-  }
+    setOpenEdit(false);
+  };
 
   const handleDeleteOpen = (target) => {
     setOpenDelete(true);
-    setObj(target)
+    setObj(target);
   };
 
   const handleDeleteClose = () => {
@@ -53,48 +54,64 @@ export default function UserTable({ data }) {
   };
 
   return (
-      <>
-      <Button onClick={handleCreateOpen} variant="contained">Add user</Button>
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell align="right">First</TableCell>
-            <TableCell align="right">Last</TableCell>
-            <TableCell align="right">Email </TableCell>
-            <TableCell align="right">Phone </TableCell>
-            <TableCell align="right">Location </TableCell>
-            <TableCell align="right">Hobby </TableCell>
-            <TableCell align="right">Actions </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row, index) => (
-            <TableRow key={index}>
-              <TableCell align="right">{index}</TableCell>
-              <TableCell align="right">{row.first}</TableCell>
-              <TableCell align="right">{row.last}</TableCell>
-              <TableCell align="right">{row.email}</TableCell>
-              <TableCell align="right">{row.phone}</TableCell>
-              <TableCell align="right">{row.location}</TableCell>
-              <TableCell align="right">{row.hobby}</TableCell>
-              <TableCell>
-                <Button onClick={() => handleEditOpen(row)} variant="contained" color="primary">
-                  Edit
-                </Button>
-                <Button onClick={() => handleDeleteOpen(row)} variant="contained" color="secondary">
-                  Delete
-                </Button>
-              </TableCell>
+    <>
+      <div>
+        <Button onClick={handleCreateOpen} variant="contained">
+          Add user
+        </Button>
+        <CSVLink filename="user_list.csv" data={data}>
+          {" "}
+          <Button variant="contained">Download CSV</Button>
+        </CSVLink>
+      </div>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell align="right">First</TableCell>
+              <TableCell align="right">Last</TableCell>
+              <TableCell align="right">Email </TableCell>
+              <TableCell align="right">Phone </TableCell>
+              <TableCell align="right">Location </TableCell>
+              <TableCell align="right">Hobby </TableCell>
+              <TableCell align="right">Actions </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    <CustomDialog open={openDelete} close={handleDeleteClose} single={obj}/>
-    <FormDialog open={openEdit} close={handleEditClose} object={obj}/>
-    <FormDialog open={openCreate} close={handleCreateClose} object={null}/>
+          </TableHead>
+          <TableBody>
+            {data.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell align="right">{index}</TableCell>
+                <TableCell align="right">{row.first}</TableCell>
+                <TableCell align="right">{row.last}</TableCell>
+                <TableCell align="right">{row.email}</TableCell>
+                <TableCell align="right">{row.phone}</TableCell>
+                <TableCell align="right">{row.location}</TableCell>
+                <TableCell align="right">{row.hobby}</TableCell>
+                <TableCell>
+                  <Button
+                    onClick={() => handleEditOpen(row)}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={() => handleDeleteOpen(row)}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <CustomDialog open={openDelete} close={handleDeleteClose} single={obj} />
+      <FormDialog open={openEdit} close={handleEditClose} object={obj} />
+      <FormDialog open={openCreate} close={handleCreateClose} object={null} />
     </>
   );
 }
